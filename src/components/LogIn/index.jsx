@@ -1,15 +1,16 @@
 ﻿import {Link} from "react-router-dom";
 
 import Button from "../Button";
+import Input from "../Input";
 
 export default function LogIn() {
   return (
     <section className="LogIn">
       <form >
         <label className="sr-only" htmlFor="email">Email</label>
-        <input type="email" placeholder="Email" name="email" required />
+        <Input type="email" placeholder="Email" name="email" />
         <label className="sr-only" htmlFor="password">Senha</label>
-        <input type="password" placeholder="Senha" name="password" required />
+        <Input type="password" placeholder="Senha" name="password" />
 
         <Button value="Entrar" />
       </form>

@@ -1,19 +1,20 @@
 ﻿import {Link} from "react-router-dom";
 
 import Button from "../Button";
+import Input from "../Input";
 
 export default function SignUp() {
   return (
     <section className="SignUp">
       <form >
         <label className="sr-only" htmlFor="email">Email</label>
-        <input type="email" placeholder="Email" name="email" required />
+        <Input type="email" placeholder="Email" name="email" />
         <label className="sr-only" htmlFor="password">Senha</label>
-        <input type="password" placeholder="Senha" name="password" required />
+        <Input type="password" placeholder="Senha" name="password" />
         <label className="sr-only" htmlFor="username">Nome</label>
-        <input type="text" placeholder="Nome" name="username" required />
+        <Input type="text" placeholder="Nome" name="username" />
         <label className="sr-only" htmlFor="photo">Foto do usuário</label>
-        <input type="url" name="photo" placeholder="Foto" required />
+        <Input type="url" name="photo" placeholder="Foto" />
 
         <Button value="Cadastrar" />
       </form>

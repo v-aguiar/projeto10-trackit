@@ -9,9 +9,12 @@ export default function Button({value}) {
 const Input = styled.input`
   outline: none;
   border: none;
+  border-radius: 5px;
 
   color: #fff;
-  font-size: 21px;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: 'Lexend Deca', sans-serif;
 
   height: 35px;
   width: 100%;

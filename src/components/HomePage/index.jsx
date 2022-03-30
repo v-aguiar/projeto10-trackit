@@ -35,32 +35,6 @@ const HomeSection = styled.section`
     margin-bottom: 33px;
   }
 
-  input {
-    height: 45px;
-    width: 100%;
-
-    margin-bottom: 6px;
-    padding: 0 11px;
-
-    outline: none;
-    border-radius: 5px;
-    border: 1px solid var(--border-grey);
-
-    transition: .7s;
-
-    &::placeholder {
-      color: var(--border-grey);
-    }
-
-    &:last-child {
-      margin-bottom: 25px;
-    }
-
-    &:hover {
-      border: 2px solid var(--btn-blue);
-    }
-  }
-
   a {
     color: var(--btn-blue);
   }

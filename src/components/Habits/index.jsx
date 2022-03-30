@@ -1,26 +1,37 @@
-﻿import styled from "styled-components"
+﻿import {useState} from "react"
+
+import styled from "styled-components"
 
 import Header from "../Header"
 import Button from "../Button"
 import Footer from "../Footer"
+import Habit from "../Habit"
 
 export default function Habits() {
+  const [habits, setHabits] = useState([<></>])
+
+  function addHabit() {
+    setHabits([...habits, <Habit />])
+  }
+
   return (
     <HabitsSection>
       <Header />
       <SectionHeader>
         <h2>Meus hábitos</h2>
-        <span className="plusBtn">
+        <span onClick={addHabit} className="plusBtn">
           <Button value="+" />
         </span>
       </SectionHeader>
-
+      {habits.map(habit => habit)}
       <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
 
       <Footer />
     </HabitsSection>
   )
 }
+
+// ********************* Component Styles 
 
 const HabitsSection = styled.section`
   height: 100vh;
