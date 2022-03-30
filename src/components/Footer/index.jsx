@@ -1,6 +1,6 @@
 ﻿import {Link} from "react-router-dom";
 
-import {CircularProgressbar, buildStyles} from "react-circular-progressbar"
+import {CircularProgressbar} from "react-circular-progressbar"
 import 'react-circular-progressbar/dist/styles.css';
 
 import styled from "styled-components"
@@ -11,7 +11,9 @@ export default function Footer() {
   return (
     <FooterSection>
       <Link to="/habitos">Hábitos</Link>
-      <CircularProgressbar className="progress-bar" background={true} backgroundPadding="7" value={percentage} text="Hoje" />
+      <Link to="/hoje">
+        <CircularProgressbar className="progress-bar" background={true} backgroundPadding="7" value={percentage} text="Hoje" />
+      </Link>
       <Link to="/historico">Histórico</Link>
     </FooterSection>
   )

@@ -16,7 +16,7 @@ export default function SignUp() {
         <label className="sr-only" htmlFor="photo">Foto do usuário</label>
         <Input type="url" name="photo" placeholder="Foto" />
 
-        <Button value="Cadastrar" />
+        <Button value="Cadastrar" ></Button>
       </form>
       <Link to="/">
         <p>Já é cadastrado? Faça login!</p>

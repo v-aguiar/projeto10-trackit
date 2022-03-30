@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
     --btn-blue: #52B6FF;
     --header-blue: #126BA5;
     --text-black: #666666;
+    --text-grey: #BABABA;
     --bg-color: #F2F2F2;
     --checked-green: #8FC549;
     --uncheckd-grey: #EBEBEB;

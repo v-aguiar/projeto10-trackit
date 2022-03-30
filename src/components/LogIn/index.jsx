@@ -12,7 +12,7 @@ export default function LogIn() {
         <label className="sr-only" htmlFor="password">Senha</label>
         <Input type="password" placeholder="Senha" name="password" />
 
-        <Button value="Entrar" />
+        <Button value="Entrar" ></Button>
       </form>
 
       <Link to="/cadastro">

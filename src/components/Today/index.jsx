@@ -1,38 +1,31 @@
-﻿import {useState} from "react"
-
-import styled from "styled-components"
+﻿import styled from "styled-components"
 
 import Header from "../Header"
 import Button from "../Button"
 import Footer from "../Footer"
-import Habit from "../Habit"
 
-export default function Habits() {
-  const [habits, setHabits] = useState([<></>])
-
-  function addHabit() {
-    setHabits([...habits, <Habit key={habits} />])
-  }
-
+export default function Today() {
   return (
-    <HabitsSection>
+    <TodaySection>
       <Header />
       <SectionHeader>
-        <h2>Meus hábitos</h2>
-        <span onClick={addHabit} className="plusBtn">
+        <span className="today-header">
+          <h2>Quarta, 30/03</h2>
+          <small>Nenhum hábito concluído ainda</small>
+        </span>
+        <span className="plusBtn">
           <Button value="+" />
         </span>
       </SectionHeader>
-      {Array.from(habits).map(habit => habit)}
       <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
       <Footer />
-    </HabitsSection>
+    </TodaySection>
   )
 }
 
 // ********************* Component Styles 
 
-const HabitsSection = styled.section`
+const TodaySection = styled.section`
   height: 100vh;
   width: 100%;
 
@@ -75,4 +68,18 @@ const SectionHeader = styled.div`
   justify-content: space-between;
 
   margin-bottom: 28px;
+
+  .today-header {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    align-items: flex-start;
+
+    small {
+      margin-top: 10px;
+      font-size: 17px;
+      
+      color: var(--text-grey);
+    }
+  }
 `

@@ -1,8 +1,8 @@
 ﻿import styled from "styled-components"
 
-export default function Input({name, placeholder, type}) {
+export default function Input({name, placeholder, type, disabled = false}) {
   return (
-    <InputComponent type={type} name={name} placeholder={placeholder} required />
+    <InputComponent type={type} name={name} placeholder={placeholder} disabled={disabled} required />
   )
 }
 
@@ -29,5 +29,14 @@ const InputComponent = styled.input`
 
     &:hover {
       border: 2px solid var(--btn-blue);
+    }
+
+    &:disabled {
+      filter: brightness(.8);
+    }
+
+    &:disabled:hover {
+      outline: none;
+      border: 1px solid var(--border-grey);
     }
 `
