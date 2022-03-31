@@ -1,8 +1,8 @@
 ﻿import styled from "styled-components"
 
-export default function Input({name, placeholder, type, disabled = false}) {
+export default function Input({name, placeholder, type, disabled = false, onChange = () => {}}) {
   return (
-    <InputComponent type={type} name={name} placeholder={placeholder} disabled={disabled} required />
+    <InputComponent onChange={onChange} type={type} name={name} placeholder={placeholder} disabled={disabled} required />
   )
 }
 
@@ -15,7 +15,7 @@ const InputComponent = styled.input`
 
     outline: none;
     border-radius: 5px;
-    border: 1px solid var(--border-grey);
+    border: 2px solid var(--border-grey);
 
     transition: .7s;
 
@@ -32,7 +32,7 @@ const InputComponent = styled.input`
     }
 
     &:disabled {
-      filter: brightness(.8);
+      background-color: var(--border-grey);
     }
 
     &:disabled:hover {

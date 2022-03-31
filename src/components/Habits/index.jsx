@@ -8,10 +8,10 @@ import Footer from "../Footer"
 import Habit from "../Habit"
 
 export default function Habits() {
-  const [habits, setHabits] = useState([<></>])
+  const [habits, setHabits] = useState([])
 
   function addHabit() {
-    setHabits([...habits, <Habit key={habits} />])
+    setHabits([...habits, <></>])
   }
 
   return (
@@ -23,7 +23,7 @@ export default function Habits() {
           <Button value="+" />
         </span>
       </SectionHeader>
-      {Array.from(habits).map(habit => habit)}
+      {habits.map(habit => <Habit key={habits} />)}
       <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
       <Footer />
     </HabitsSection>

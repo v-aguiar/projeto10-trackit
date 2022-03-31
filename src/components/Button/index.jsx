@@ -35,7 +35,7 @@ const Input = styled.input`
 
   background-color: var(--btn-blue);
 
-  transition: all .8s;
+  transition: all .5s;
 
   &:hover {
     cursor: pointer;
