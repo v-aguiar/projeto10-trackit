@@ -2,7 +2,7 @@
 
 import styled from "styled-components"
 
-export default function DayButton({dayKey, value, id, habitsDays, setHabitsDays}) {
+export default function DayButton({dayKey, value, id, habitsDays, setHabitsDays, check = false}) {
   const [isChecked, setIsChecked] = useState(false)
 
   const idFirst = id.split("-")[0]
@@ -17,13 +17,15 @@ export default function DayButton({dayKey, value, id, habitsDays, setHabitsDays}
 
   return (
     <DayCheck >
-      <input defaultChecked={isChecked} onClick={handleChange} className="sr-only" type="checkbox" name="dayInput" id={idFirst} />
+      <input defaultChecked={check || isChecked} onClick={handleChange} className="sr-only" type="checkbox" name="dayInput" id={idFirst} />
       <label htmlFor={idFirst}>
         {dayKey}
       </label>
     </DayCheck>
   )
 }
+
+// ********************* Component Styles *********************
 
 const DayCheck = styled.li`
   margin-right: 5px;

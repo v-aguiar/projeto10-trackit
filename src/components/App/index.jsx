@@ -1,4 +1,4 @@
-﻿import {useState} from "react"
+﻿import {useState, useEffect} from "react"
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 
 import UserContext from "../../contexts/UserContext"
@@ -13,11 +13,21 @@ import History from "../History"
 export default function App() {
   const [token, setToken] = useState("")
   const [userImage, setUserImage] = useState("")
+  const [weekdays, setWeekdays] = useState()
 
-  console.log("token: ", token)
-  console.log("userImage: ", userImage)
+  useEffect(() => {
+    setWeekdays([
+      {dayKey: "D", value: 0},
+      {dayKey: "S", value: 1},
+      {dayKey: "T", value: 2},
+      {dayKey: "Q", value: 3},
+      {dayKey: "Q", value: 4},
+      {dayKey: "S", value: 5},
+      {dayKey: "S", value: 6}
+    ])
+  }, [])
 
-  const contextValue = {token, setToken, userImage, setUserImage}
+  const contextValue = {token, setToken, userImage, setUserImage, weekdays}
 
   return (
     <UserContext.Provider value={contextValue} >

@@ -1,4 +1,8 @@
-﻿import {useState} from "react"
+﻿import {useState, useEffect, useContext} from "react"
+
+import UserContext from "../../contexts/UserContext"
+
+import axios from "axios"
 
 import styled from "styled-components"
 
@@ -6,10 +10,37 @@ import Header from "../Header"
 import Button from "../Button"
 import Footer from "../Footer"
 import Habit from "../Habit"
+import CreateHabit from "../CreateHabit"
 
 export default function Habits() {
   const [habitsAmount, setHabitsAmount] = useState(new Map())
   const [counter, setCounter] = useState(0)
+  const [createdHabits, setCreatedHabits] = useState([])
+
+  console.log("created habits: ", createdHabits)
+
+  const {token} = useContext(UserContext)
+
+  useEffect(() => fetchHabits(), [counter])
+
+  function fetchHabits() {
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+
+    const config = {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }
+
+    const request = axios.get(URL, config)
+    request.then((response) => {
+      console.log(response.data)
+      setCreatedHabits(response.data)
+    })
+    request.catch((err) => {
+      console.error(err.response)
+    })
+  }
 
   function addCount() {
     setCounter(counter + 1)
@@ -35,14 +66,22 @@ export default function Habits() {
           <Button value="+" />
         </span>
       </SectionHeader>
-      {[...habitsAmount.values()].map(value => <Habit key={value} removeHabit={removeHabit} />)}
-      <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+      {[...habitsAmount.values()].map(value => <CreateHabit key={value} removeHabit={removeHabit} />)}
+
+
+
+      {
+        createdHabits.length > 0
+          ? createdHabits.map(({name, days, id}) => <Habit name={name} days={days} key={id} />)
+          : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+      }
+
       <Footer />
     </HabitsSection>
   )
 }
 
-// ********************* Component Styles 
+// ********************* Component Styles *********************
 
 const HabitsSection = styled.section`
   height: 100vh;
