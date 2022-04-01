@@ -1,14 +1,18 @@
-﻿import {useState} from 'react';
+﻿import {useState, useContext} from 'react';
 import {Link, useNavigate} from "react-router-dom";
+
+import UserContext from '../../contexts/UserContext';
 
 import axios from 'axios';
 
-import Button from "../Button";
 import Input from "../Input";
+import Button from "../Button";
 
 export default function LogIn() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState({})
+
+  const {setUserImage, setToken} = useContext(UserContext)
 
   const navigate = useNavigate()
 
@@ -21,7 +25,13 @@ export default function LogIn() {
 
     const request = axios.post(URL, data)
     request.then((response) => {
+      const {image, token} = response.data
+
+      setToken(token)
+      setUserImage(image)
+
       console.log("response: ", response.data)
+
       console.log("Logged In!")
       navigate("/hoje")
     })

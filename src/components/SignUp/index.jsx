@@ -32,10 +32,10 @@ export default function SignUp() {
       setLoading(false)
     })
 
-    // email: "pracatum@teste.com"
-    // image: "https://pracatum.png"
-    // name: "Pracatum"
-    // password: "pracatum"
+    // email: "vitu@teste.com"
+    // image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5zjHGydxteBYChYUS7ZyQSveSrqHHhyA4yw&usqp=CAU"
+    // name: "Vitu"
+    // password: "vitu"
   }
 
   const handleChange = (key, sanitizeFn) => (e) => {

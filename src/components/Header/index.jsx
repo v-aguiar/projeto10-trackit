@@ -1,10 +1,15 @@
-﻿import {Link} from "react-router-dom"
+﻿import {useContext} from 'react'
+import {Link} from "react-router-dom"
+
+import UserContext from '../../contexts/UserContext';
 
 import styled from "styled-components"
 
 export default function Header() {
+  const {userImage} = useContext(UserContext)
+
   return (
-    <HeaderSection>
+    <HeaderSection userImage={userImage}>
       <Link to="/">
         <h1>TrackIt</h1>
       </Link>
@@ -41,7 +46,9 @@ const HeaderSection = styled.section`
 
   div {
     border-radius: 50%;
-    background-color: #fff;
+    /* background-color: #fff; */
+    background-image: url(${props => props.userImage});
+    background-size: contain;
 
     width: 51px;
     height: 51px;

@@ -1,12 +1,44 @@
-﻿import styled from "styled-components";
+﻿import {useEffect, useState} from "react";
+
+import styled from "styled-components";
+import {v4 as uuidv4} from 'uuid';
+
 import Button from "../Button";
 import Input from "../Input";
+import DayButton from "../DayButton";
 
-export default function Habit() {
+export default function Habit({removeHabit}) {
+  const [habitsName, setHabitsName] = useState({name: ""})
+  const [habitsDays, setHabitsDays] = useState([])
+  const [weekdays, setWeekdays] = useState([])
 
+  console.log("habitsDays: ", habitsDays)
+  console.log("habitsName: ", habitsName)
+
+  useEffect(() => {
+    setWeekdays([
+      {dayKey: "D", value: 0},
+      {dayKey: "S", value: 1},
+      {dayKey: "T", value: 2},
+      {dayKey: "Q", value: 3},
+      {dayKey: "Q", value: 4},
+      {dayKey: "S", value: 5},
+      {dayKey: "S", value: 6}
+    ])
+  }, [])
+
+  function handleChange(e) {
+    e.preventDefault()
+
+    const value = e.target.value
+
+    setHabitsName({...habitsName, name: value})
+  }
 
   function handleSubmit(e) {
     e.preventDefault()
+
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
 
     console.log("Habit data: ", e)
   }
@@ -15,55 +47,18 @@ export default function Habit() {
     <AddHabit>
       <form onSubmit={handleSubmit} >
         <label className="sr-only" htmlFor="habit">Habit description</label>
-        <Input type="text" placeholder="Nome do hábito" name="habit" />
+        <Input onChange={handleChange} value={habitsName} type="text" placeholder="Nome do hábito" name="habit" />
 
         <ul className="day-inputs">
-          <li>
-            <input className="sr-only" type="checkbox" name="dayInput" id="sunday" />
-            <label htmlFor="sunday">
-              D
-            </label>
-          </li>
-          <li>
-            <input className="sr-only" type="checkbox" name="dayInput" id="monday" />
-            <label htmlFor="monday">
-              S
-            </label>
-          </li>
-          <li>
-            <input className="sr-only" type="checkbox" name="dayInput" id="tuesday" />
-            <label htmlFor="tuesday">
-              T
-            </label>
-          </li>
-          <li>
-            <input className="sr-only" type="checkbox" name="dayInput" id="wednesday" />
-            <label htmlFor="wednesday">
-              Q
-            </label>
-          </li>
-          <li>
-            <input className="sr-only" type="checkbox" name="dayInput" id="thursday" />
-            <label htmlFor="thursday">
-              Q
-            </label>
-          </li>
-          <li>
-            <input className="sr-only" type="checkbox" name="dayInput" id="friday" />
-            <label htmlFor="friday">
-              S
-            </label>
-          </li>
-          <li>
-            <input className="sr-only" type="checkbox" name="dayInput" id="saturday" />
-            <label htmlFor="saturday">
-              S
-            </label>
-          </li>
+          {weekdays.map(({dayKey, value}) => {
+            const id = uuidv4();
+
+            return <DayButton habitsDays={habitsDays} setHabitsDays={setHabitsDays} key={id} id={id} dayKey={dayKey} value={value} />
+          })}
         </ul>
 
         <div className="habit-buttons">
-          <a>Cancelar</a>
+          <a onClick={removeHabit}>Cancelar</a>
           <Button value="Salvar" />
         </div>
       </form>
@@ -89,47 +84,6 @@ const AddHabit = styled.section`
   
     .day-inputs {
       display: flex;
-
-      li {
-        margin-right: 5px;
-        background-color: transparent;
-
-        label {
-          outline: none;
-          border: solid 2px var(--border-grey);
-          border-radius: 5px;
-
-          color: var(--border-grey);
-          font-size: 20px;
-          font-weight: 400;
-          font-family: 'Lexend Deca', sans-serif;
-
-          height: 35px;
-          width: 35px;
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 15px;
-
-          background-color: #fff;
-
-          transition: all .5s;
-
-          &:hover {
-            cursor: pointer;
-          }
-        }
-
-        input:checked + label{
-          background-color: var(--border-grey);
-          color: #fff;
-        }
-
-        &:last-child {
-          margin-right: 0;
-        }
-      }
     }
   
     .habit-buttons {
@@ -143,6 +97,14 @@ const AddHabit = styled.section`
       a {
         margin-right: 23px;
         color: var(--btn-blue);
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      input { 
+        margin-bottom: 0;
       }
     }
   }

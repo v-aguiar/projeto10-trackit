@@ -8,10 +8,22 @@ import Footer from "../Footer"
 import Habit from "../Habit"
 
 export default function Habits() {
-  const [habits, setHabits] = useState([])
+  const [habitsAmount, setHabitsAmount] = useState(new Map())
+  const [counter, setCounter] = useState(0)
 
-  function addHabit() {
-    setHabits([...habits, <></>])
+  function addCount() {
+    setCounter(counter + 1)
+
+    addHabit(`habit${counter}`, counter)
+  }
+
+  function addHabit(k, v) {
+    setHabitsAmount(new Map(habitsAmount.set(k, v)))
+  }
+
+  function removeHabit() {
+    habitsAmount.delete(`habit${counter - 1}`, counter - 1)
+    setCounter(counter - 1)
   }
 
   return (
@@ -19,11 +31,11 @@ export default function Habits() {
       <Header />
       <SectionHeader>
         <h2>Meus hábitos</h2>
-        <span onClick={addHabit} className="plusBtn">
+        <span onClick={addCount} className="plusBtn">
           <Button value="+" />
         </span>
       </SectionHeader>
-      {habits.map(habit => <Habit key={habits} />)}
+      {[...habitsAmount.values()].map(value => <Habit key={value} removeHabit={removeHabit} />)}
       <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
       <Footer />
     </HabitsSection>
