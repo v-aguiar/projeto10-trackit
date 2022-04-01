@@ -3,9 +3,33 @@
 import UserContext from "../../contexts/UserContext";
 
 import styled from "styled-components";
+import axios from "axios"
+
+import trashIcon from "../../assets/img/trash-icon.svg"
+
 
 export default function Habit({name, days, id}) {
-  const {weekdays} = useContext(UserContext)
+  const {weekdays, token} = useContext(UserContext)
+
+  function deleteApiHabit() {
+    console.log("id: ", id)
+
+    const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
+
+    console.log("URL: ", URL)
+
+    const config = {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }
+
+    const request = axios.delete(URL, config)
+    request.then((response) => {
+      console.log("Habit deleted!: ", response)
+    })
+    request.catch((err) => console.error(err.response))
+  }
 
   return (
     <CreatedHabit>
@@ -16,6 +40,7 @@ export default function Habit({name, days, id}) {
           return isChecked ? <li className="--checked" key={id}>{dayKey}</li> : <li key={id}>{dayKey}</li>
         })}
       </ul>
+      <img onClick={deleteApiHabit} src={trashIcon} alt="Remove habit" />
     </CreatedHabit>
   )
 }
@@ -29,6 +54,8 @@ const CreatedHabit = styled.article`
 
   padding: 19px 18px;
   margin-bottom: 10px;
+
+  position: relative;
   
   .day-inputs {
     display: flex;
@@ -64,6 +91,16 @@ const CreatedHabit = styled.article`
         &:hover {
           cursor: pointer;
         }
+    }
+  }
+
+  img {
+    position: absolute;
+    top: 11px;
+    right: 10px;
+
+    &:hover {
+      cursor: pointer;
     }
   }
 `

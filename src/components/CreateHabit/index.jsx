@@ -2,13 +2,14 @@
 
 import UserContext from "../../contexts/UserContext";
 
-import styled from "styled-components";
 import {v4 as uuidv4} from 'uuid';
+import axios from "axios";
+
+import styled from "styled-components";
 
 import Button from "../Button";
 import Input from "../Input";
 import DayButton from "../DayButton";
-import axios from "axios";
 
 export default function CreateHabit({removeHabit}) {
   const [habitsName, setHabitsName] = useState({name: ""})

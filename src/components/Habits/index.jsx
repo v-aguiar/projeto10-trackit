@@ -2,6 +2,7 @@
 
 import UserContext from "../../contexts/UserContext"
 
+import {v4 as uuidv4} from 'uuid';
 import axios from "axios"
 
 import styled from "styled-components"
@@ -66,16 +67,21 @@ export default function Habits() {
           <Button value="+" />
         </span>
       </SectionHeader>
-      {[...habitsAmount.values()].map(value => <CreateHabit key={value} removeHabit={removeHabit} />)}
-
-
-
       {
-        createdHabits.length > 0
-          ? createdHabits.map(({name, days, id}) => <Habit name={name} days={days} key={id} />)
-          : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+        [...habitsAmount.values()].map(value => {
+          const uniqueKey = uuidv4()
+          return <CreateHabit key={uniqueKey} removeHabit={removeHabit} />
+        })
       }
 
+      {
+        (createdHabits.length > 0)
+          ? createdHabits.map(({name, days, id}) => {
+            const uniqueKey = uuidv4()
+            return <Habit name={name} days={days} id={id} key={uniqueKey} />
+          })
+          : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+      }
       <Footer />
     </HabitsSection>
   )
