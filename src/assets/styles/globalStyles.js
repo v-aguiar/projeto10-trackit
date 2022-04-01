@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
     --text-grey: #BABABA;
     --bg-color: #F2F2F2;
     --checked-green: #8FC549;
-    --uncheckd-grey: #EBEBEB;
+    --unchecked-grey: #EBEBEB;
     --fail-red: #E75766;
     --today-yellow: #FFFF81;
   }

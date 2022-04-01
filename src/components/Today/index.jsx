@@ -1,10 +1,37 @@
-﻿import styled from "styled-components"
+﻿import {useContext, useState, useEffect} from "react"
+
+import UserContext from "../../contexts/UserContext"
+import axios from "axios"
+
+import styled from "styled-components"
 
 import Header from "../Header"
-import Button from "../Button"
 import Footer from "../Footer"
+import TodayHabit from "../TodayHabit"
 
 export default function Today() {
+  const [todayHabits, setTodayHabits] = useState([])
+
+  console.log("todayHabits: ", todayHabits)
+
+  const {token} = useContext(UserContext)
+
+  useEffect(() => {fetchTodayHabits()}, [])
+
+  function fetchTodayHabits() {
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
+
+    const config = {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }
+
+    const request = axios.get(URL, config)
+    request.then((response) => {setTodayHabits(response.data)})
+    request.catch((err) => {console.error(err.response)})
+  }
+
   return (
     <TodaySection>
       <Header />
@@ -13,11 +40,12 @@ export default function Today() {
           <h2>Quarta, 30/03</h2>
           <small>Nenhum hábito concluído ainda</small>
         </span>
-        <span className="plusBtn">
-          <Button value="+" />
-        </span>
       </SectionHeader>
-      <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+      {
+        (todayHabits.length > 0)
+          ? todayHabits.map(({currentSequence, done, highestSequence, id, name}) => <TodayHabit done={done} id={id} currentSequence={currentSequence} highestSequence={highestSequence} name={name} />)
+          : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+      }
       <Footer />
     </TodaySection>
   )

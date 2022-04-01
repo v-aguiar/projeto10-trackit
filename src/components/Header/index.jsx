@@ -34,6 +34,7 @@ const HeaderSection = styled.section`
   height: 70px;
 
   background-color: var(--header-blue);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 
   a {
     text-decoration: none;
