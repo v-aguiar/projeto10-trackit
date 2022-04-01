@@ -18,12 +18,20 @@ export default function CreateHabit({removeHabit}) {
 
   const {token, weekdays} = useContext(UserContext)
 
+  console.log("habitsDays: ", habitsDays)
+
   function handleChange(e) {
     e.preventDefault()
 
     const value = e.target.value
 
     setHabitsName({...habitsName, name: value})
+  }
+
+  function handleDaysChange(value) {
+    if(!habitsDays.includes(value)) {
+      setHabitsDays([...habitsDays, value])
+    }
   }
 
   function postHabit() {
@@ -48,6 +56,7 @@ export default function CreateHabit({removeHabit}) {
     })
     request.catch((err) => {
       console.error(err.response)
+      alert("Deu ruim! Por favor, tente novamente...")
       setIsLoading(false)
     })
   }
@@ -67,7 +76,7 @@ export default function CreateHabit({removeHabit}) {
         <ul className="day-inputs">
           {weekdays.map(({dayKey, value}) => {
             const id = uuidv4();
-            return <DayButton habitsDays={habitsDays} setHabitsDays={setHabitsDays} key={id} id={id} dayKey={dayKey} value={value} />
+            return <DayButton isLoading={isLoading} handleDaysChange={handleDaysChange} habitsDays={habitsDays} key={id} dayKey={dayKey} value={value} />
           })}
         </ul>
 

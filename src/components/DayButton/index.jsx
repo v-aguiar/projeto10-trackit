@@ -1,69 +1,48 @@
-﻿import {useState} from "react"
+﻿import styled from "styled-components"
 
-import styled from "styled-components"
-
-export default function DayButton({dayKey, value, id, habitsDays, setHabitsDays, check = false}) {
-  const [isChecked, setIsChecked] = useState(false)
-
-  const idFirst = id.split("-")[0]
-
-  function handleChange() {
-    setIsChecked(!isChecked)
-
-    if(!habitsDays.includes(value)) {
-      setHabitsDays([...habitsDays, value])
-    }
-  }
+export default function DayButton({dayKey, value, handleDaysChange, habitsDays, isLoading}) {
+  const className = habitsDays.includes(value) ? "--checked" : ""
 
   return (
-    <DayCheck >
-      <input defaultChecked={check || isChecked} onClick={handleChange} className="sr-only" type="checkbox" name="dayInput" id={idFirst} />
-      <label htmlFor={idFirst}>
-        {dayKey}
-      </label>
-    </DayCheck>
+    <DayCheck isLoading={isLoading} >
+      <div className={className} onClick={isLoading ? () => {} : () => handleDaysChange(value)}>{dayKey}</div>
+    </DayCheck >
   )
 }
 
 // ********************* Component Styles *********************
 
 const DayCheck = styled.li`
-  margin-right: 5px;
-  background-color: transparent;
-  
-  &:last-child {
-    margin-right: 0;
-  }
-
-  input:checked + label{
-    background-color: var(--border-grey);
-    color: #fff;
-  }
-
-  label {
+  div {
     outline: none;
-    border: solid 2px var(--border-grey);
-    border-radius: 5px;
+      border: solid 2px var(--border-grey);
+      border-radius: 5px;
 
-    color: var(--border-grey);
-    font-size: 20px;
-    font-weight: 400;
-    font-family: 'Lexend Deca', sans-serif;
+      color: var(--border-grey);
+      font-size: 20px;
+      font-weight: 400;
+      font-family: 'Lexend Deca', sans-serif;
 
-    height: 35px;
-    width: 35px;
+      height: 35px;
+      width: 35px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-    background-color: #fff;
+      margin: 10px 0 10px 5px;
 
-    transition: all .5s;
+      background-color: #fff;
 
-    &:hover {
-      cursor: pointer;
-    }
+      transition: all .5s;
+
+      &:hover {
+        cursor: ${props => props.isLoading ? "default" : "pointer"};
+      }
+
+      &.--checked {
+        background-color: var(--border-grey);
+        color: #fff;
+      }
   }
 `

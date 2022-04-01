@@ -18,8 +18,6 @@ export default function Habits() {
   const [counter, setCounter] = useState(0)
   const [createdHabits, setCreatedHabits] = useState([])
 
-  console.log("created habits: ", createdHabits)
-
   const {token} = useContext(UserContext)
 
   useEffect(() => fetchHabits(), [counter])
@@ -58,6 +56,11 @@ export default function Habits() {
     setCounter(counter - 1)
   }
 
+  function reload() {
+    setCounter(counter + 1)
+    setCounter(counter - 1)
+  }
+
   return (
     <HabitsSection>
       <Header />
@@ -78,7 +81,7 @@ export default function Habits() {
         (createdHabits.length > 0)
           ? createdHabits.map(({name, days, id}) => {
             const uniqueKey = uuidv4()
-            return <Habit name={name} days={days} id={id} key={uniqueKey} />
+            return <Habit reload={reload} name={name} days={days} id={id} key={uniqueKey} />
           })
           : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
       }
@@ -125,7 +128,6 @@ const HabitsSection = styled.section`
     line-height: 23px;
   }
 `
-
 const SectionHeader = styled.div`
   display: flex;
   align-items: center;

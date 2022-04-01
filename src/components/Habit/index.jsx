@@ -2,13 +2,14 @@
 
 import UserContext from "../../contexts/UserContext";
 
-import styled from "styled-components";
+import {v4 as uuidv4} from "uuid";
 import axios from "axios"
+
+import styled from "styled-components";
 
 import trashIcon from "../../assets/img/trash-icon.svg"
 
-
-export default function Habit({name, days, id}) {
+export default function Habit({name, days, id, reload}) {
   const {weekdays, token} = useContext(UserContext)
 
   function deleteApiHabit() {
@@ -24,11 +25,18 @@ export default function Habit({name, days, id}) {
       }
     }
 
-    const request = axios.delete(URL, config)
-    request.then((response) => {
-      console.log("Habit deleted!: ", response)
-    })
-    request.catch((err) => console.error(err.response))
+    const confirmDelete = window.confirm("Você deseja mesmo excluir esse hábito?")
+
+    if(confirmDelete) {
+      const request = axios.delete(URL, config)
+      request.then((response) => {
+        console.log("Habit deleted!: ", response)
+        reload()
+      })
+      request.catch((err) => console.error(err.response))
+    } else {
+      return
+    }
   }
 
   return (
@@ -37,7 +45,8 @@ export default function Habit({name, days, id}) {
       <ul className="day-inputs">
         {weekdays.map(({dayKey, value}) => {
           const isChecked = days.includes(value)
-          return isChecked ? <li className="--checked" key={id}>{dayKey}</li> : <li key={id}>{dayKey}</li>
+          const uniqueId = uuidv4()
+          return isChecked ? <li className="--checked" key={uniqueId}>{dayKey}</li> : <li key={uniqueId}>{dayKey}</li>
         })}
       </ul>
       <img onClick={deleteApiHabit} src={trashIcon} alt="Remove habit" />
@@ -60,37 +69,33 @@ const CreatedHabit = styled.article`
   .day-inputs {
     display: flex;
 
-      li {
-        outline: none;
-        border: solid 2px var(--border-grey);
-        border-radius: 5px;
+    li {
+      outline: none;
+      border: solid 2px var(--border-grey);
+      border-radius: 5px;
 
-        color: var(--border-grey);
-        font-size: 20px;
-        font-weight: 400;
-        font-family: 'Lexend Deca', sans-serif;
+      color: var(--border-grey);
+      font-size: 20px;
+      font-weight: 400;
+      font-family: 'Lexend Deca', sans-serif;
 
-        height: 35px;
-        width: 35px;
+      height: 35px;
+      width: 35px;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-        margin: 10px 0 10px 5px;
+      margin: 10px 0 10px 5px;
 
-        background-color: #fff;
+      background-color: #fff;
 
-        transition: all .5s;
+      transition: all .5s;
 
-        &.--checked {
-          background-color: var(--border-grey);
-          color: #fff;
-        }
-
-        &:hover {
-          cursor: pointer;
-        }
+      &.--checked {
+        background-color: var(--border-grey);
+        color: #fff;
+      }
     }
   }
 
@@ -98,9 +103,13 @@ const CreatedHabit = styled.article`
     position: absolute;
     top: 11px;
     right: 10px;
+    transition: .5s;
 
     &:hover {
       cursor: pointer;
+      
+      width: 15px;
+
     }
   }
 `
