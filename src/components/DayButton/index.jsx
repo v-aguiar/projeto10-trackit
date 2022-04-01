@@ -7,7 +7,7 @@ export default function DayButton({dayKey, value, id, habitsDays, setHabitsDays}
 
   const idFirst = id.split("-")[0]
 
-  function handleChange(value) {
+  function handleChange() {
     setIsChecked(!isChecked)
 
     if(!habitsDays.includes(value)) {
@@ -17,7 +17,7 @@ export default function DayButton({dayKey, value, id, habitsDays, setHabitsDays}
 
   return (
     <DayCheck >
-      <input defaultChecked={isChecked} onChange={handleChange(value)} className="sr-only" type="checkbox" name="dayInput" id={idFirst} />
+      <input defaultChecked={isChecked} onClick={handleChange} className="sr-only" type="checkbox" name="dayInput" id={idFirst} />
       <label htmlFor={idFirst}>
         {dayKey}
       </label>
