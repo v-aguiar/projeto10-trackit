@@ -1,17 +1,62 @@
-﻿import styled from "styled-components"
+﻿import {useContext} from "react"
+
+import UserContext from "../../contexts/UserContext"
+import axios from "axios"
+
+import styled from "styled-components"
 
 import checkIcon from "../../assets/img/checkmark-icon.svg"
 
-export default function TodayHabit({currentSequence, done, highestSequence, id, name}) {
+export default function TodayHabit({currentSequence, done, highestSequence, id, name, reloadHabits, updateDoneRate}) {
+  const {token} = useContext(UserContext)
+
+  function handleHabitCheck() {
+    done ? uncheckHabit() : checkHabit()
+  }
+
+  function checkHabit() {
+    const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
+
+    const config = {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }
+
+    const request = axios.post(URL, {}, config)
+    request.then((response) => {
+      console.log("checked! ", response)
+      reloadHabits()
+    })
+    request.catch((err) => console.error(err.response))
+  }
+
+  function uncheckHabit() {
+    const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
+
+    const config = {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }
+
+    const request = axios.post(URL, {}, config)
+    request.then((response) => {
+      console.log("unchecked! ", response)
+      reloadHabits()
+    })
+    request.catch((err) => console.error(err.response))
+  }
+
   return (
-    <HabitCard done={done}>
+    <HabitCard done={done} current={currentSequence} highest={highestSequence} >
       <div className="description">
         <p className="title">{name}</p>
-        <small>Sequência atual: {currentSequence}</small>
-        <small>Seu recorde: {highestSequence}</small>
+        <small className="current">Sequência atual: {currentSequence}</small>
+        <small className="highest">Seu recorde: {highestSequence}</small>
       </div>
 
-      <div className="check">
+      <div onClick={handleHabitCheck} className="check">
         <img src={checkIcon} alt="Check button" />
       </div>
     </HabitCard>
@@ -44,6 +89,14 @@ const HabitCard = styled.article`
 
     small {
       font-size: 13px;
+    }
+
+    .current {
+      color: ${props => props.done ? "var(--checked-green)" : "var(--text-black)"};
+    }
+
+    .highest {
+      color: ${props => (props.current > 0 && props.current === props.highest) ? "var(--checked-green)" : "var(--text-black)"};
     }
   }
 

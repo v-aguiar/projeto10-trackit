@@ -14,6 +14,7 @@ export default function App() {
   const [token, setToken] = useState("")
   const [userImage, setUserImage] = useState("")
   const [weekdays, setWeekdays] = useState()
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
     setWeekdays([
@@ -27,7 +28,7 @@ export default function App() {
     ])
   }, [])
 
-  const contextValue = {token, setToken, userImage, setUserImage, weekdays}
+  const contextValue = {token, setToken, userImage, setUserImage, weekdays, setProgress, progress}
 
   return (
     <UserContext.Provider value={contextValue} >

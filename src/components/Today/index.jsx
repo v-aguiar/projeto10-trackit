@@ -2,6 +2,7 @@
 
 import UserContext from "../../contexts/UserContext"
 import axios from "axios"
+import dayjs from "dayjs"
 
 import styled from "styled-components"
 
@@ -11,12 +12,24 @@ import TodayHabit from "../TodayHabit"
 
 export default function Today() {
   const [todayHabits, setTodayHabits] = useState([])
+  const [reload, setReload] = useState(true)
+  const [doneRateValue, setDoneRateValue] = useState(0)
 
-  console.log("todayHabits: ", todayHabits)
+  useEffect(() => fetchTodayHabits(), [reload])
 
-  const {token} = useContext(UserContext)
+  const {token, setProgress} = useContext(UserContext)
 
-  useEffect(() => {fetchTodayHabits()}, [])
+  // Change dayjs weekday locale names language, so they are displayed in pt-br
+  let updateLocale = require('dayjs/plugin/updateLocale')
+  dayjs.extend(updateLocale)
+
+  dayjs.updateLocale('en', {
+    weekdays: [
+      "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"
+    ]
+  })
+
+  const formatedDate = dayjs().format('dddd, DD/MM')
 
   function fetchTodayHabits() {
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
@@ -28,8 +41,28 @@ export default function Today() {
     }
 
     const request = axios.get(URL, config)
-    request.then((response) => {setTodayHabits(response.data)})
+    request.then((response) => {
+      console.log("ói eu aqui")
+      setTodayHabits(response.data)
+      updateDoneRate(response.data)
+    })
     request.catch((err) => {console.error(err.response)})
+  }
+
+  function reloadHabits() {
+    setReload(!reload)
+  }
+
+  function updateDoneRate(currentHabits) {
+    let sum = 0;
+    if(currentHabits.length > 0) {
+      currentHabits.forEach(({done}) => {
+        console.log(done)
+        if(done) sum += (100 / currentHabits.length)
+      })
+    }
+    setDoneRateValue(sum)
+    setProgress(sum)
   }
 
   return (
@@ -37,13 +70,20 @@ export default function Today() {
       <Header />
       <SectionHeader>
         <span className="today-header">
-          <h2>Quarta, 30/03</h2>
-          <small>Nenhum hábito concluído ainda</small>
+          <h2>{formatedDate}</h2>
+          {
+            doneRateValue === 0
+              ? <small>Nenhum hábito concluído ainda</small>
+              : <small>{doneRateValue}% dos hábitos concluídos</small>
+          }
+
         </span>
       </SectionHeader>
       {
         (todayHabits.length > 0)
-          ? todayHabits.map(({currentSequence, done, highestSequence, id, name}) => <TodayHabit done={done} id={id} currentSequence={currentSequence} highestSequence={highestSequence} name={name} />)
+          ? todayHabits.map(({currentSequence, done, highestSequence, id, name}) => {
+            return <TodayHabit reloadHabits={reloadHabits} done={done} id={id} key={id} currentSequence={currentSequence} highestSequence={highestSequence} name={name} />
+          })
           : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
       }
       <Footer />
