@@ -17,6 +17,8 @@ export default function LogIn() {
   const navigate = useNavigate()
 
   useEffect(() => {
+    window.scrollTo({top: 0, behavior: 'smooth'})
+
     const localToken = localStorage.getItem("token")
     const localImage = localStorage.getItem("image")
 

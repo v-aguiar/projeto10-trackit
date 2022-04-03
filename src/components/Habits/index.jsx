@@ -35,6 +35,8 @@ export default function Habits() {
   }
 
   function fetchHabits() {
+    window.scrollTo({top: 0, behavior: 'smooth'})
+
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
 
     const config = {
@@ -106,9 +108,10 @@ export default function Habits() {
 const HabitsSection = styled.section`
   height: 100vh;
   width: 100%;
+  overflow-y: auto;
 
   margin-top: 70px;
-  margin-bottom: 28px;
+  margin-bottom: 90px;
   padding: 22px 18px 0;
 
   font-family: 'Lexend Deca', sans-serif;

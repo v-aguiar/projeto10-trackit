@@ -1,7 +1,9 @@
-﻿import {useState} from "react"
+﻿import {useState, useContext, useEffect} from "react"
 
+import UserContext from "../../contexts/UserContext"
 import {Calendar} from "react-calendar"
 import 'react-calendar/dist/Calendar.css'
+import axios from "axios"
 
 import styled from "styled-components"
 
@@ -11,11 +13,83 @@ import dayjs from "dayjs"
 
 export default function History() {
   const [value, setValue] = useState(new Date())
+  const [history, setHistory] = useState([])
+
+  console.log("history: ", history)
+
+  const {setUserImage, setToken, token} = useContext(UserContext)
+
+  useEffect(() => checkLocalToken(), [])
+  useEffect(() => fetchHistory(), [token])
+
+  function checkLocalToken() {
+    window.scrollTo({top: 0, behavior: 'smooth'})
+
+    const localToken = localStorage.getItem("token")
+    const localImage = localStorage.getItem("image")
+
+    if(localToken.length > 0) {
+      setToken(localToken)
+      setUserImage(localImage)
+    }
+  }
+
+  function fetchHistory() {
+    if(token !== null && token.length > 0) {
+      const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily"
+
+      const config = {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      }
+
+      const request = axios.get(URL, config)
+      request.then((response) => {
+        console.log("response history: ", response.data)
+        setHistory(response.data)
+      })
+      request.catch((err) => console.error(err.response))
+    }
+  }
 
   function handleChange(nextValue) {
     const ihuu = dayjs(nextValue).format("dddd, DD/MM")
     console.log("nextValue: ", ihuu)
     setValue(nextValue)
+  }
+
+  function tileClassName({date, view}) {
+    // Add class to tile in month view only
+    // console.log("view: ", view)
+    // console.log("date: ", dayjs(date).format("DD/MM/YYYY"))
+
+    if(history.length > 0) {
+      const matchDay = history.filter(({day, habits}) => {
+        console.log("day: ", day)
+
+        return day === dayjs(date).format("DD/MM/YYYY")
+      })
+      console.log("matchDay: ", matchDay)
+      console.log("matchDay[1]: ", matchDay[0])
+
+      if(matchDay !== undefined && matchDay.length > 0) {
+        let isDone = true
+
+        const {habits} = matchDay[0]
+
+        habits.forEach(({done}) => {
+          if(done) {
+            isDone = isDone && true
+          } else {
+            isDone = false
+          }
+        })
+
+        return isDone ? "--done" : "--notDone"
+      }
+      return
+    }
   }
 
   return (
@@ -24,7 +98,7 @@ export default function History() {
       <SectionHeader>
         <h2>Histórico</h2>
       </SectionHeader>
-      <Calendar locale="pt-BR" onChange={handleChange} value={value} />
+      <Calendar locale="pt-BR" tileClassName={tileClassName} onChange={handleChange} value={value} />
       <Footer />
     </HistorySection>
   )
@@ -37,7 +111,7 @@ const HistorySection = styled.section`
   width: 100%;
 
   margin-top: 70px;
-  margin-bottom: 28px;
+  margin-bottom: 70px;
   padding: 22px 18px 0;
 
   font-family: 'Lexend Deca', sans-serif;
@@ -69,6 +143,8 @@ const HistorySection = styled.section`
       display: flex;
       align-items: center;
       justify-content: center;
+
+      font-size: 16px;
     }
 
     .react-calendar__tile--now {
@@ -76,7 +152,17 @@ const HistorySection = styled.section`
     }
 
     .react-calendar__tile {
+      font-size: 14px;
+
       border-radius: 50%;
+    }
+
+    .--done {
+      background-color: var(--checked-green);
+    }
+
+    .--notDone {
+      background-color: var(--fail-red);
     }
   }
 

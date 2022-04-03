@@ -1,4 +1,4 @@
-﻿import {useState} from "react";
+﻿import {useState, useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom";
 
 import axios from "axios";
@@ -9,6 +9,8 @@ import Input from "../Input";
 export default function SignUp() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState({})
+
+  useEffect(() => window.scrollTo({top: 0, behavior: 'smooth'}), [])
 
   const navigate = useNavigate()
 

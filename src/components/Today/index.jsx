@@ -44,6 +44,8 @@ export default function Today() {
   const formatedDate = dayjs().format('dddd, DD/MM')
 
   function fetchTodayHabits() {
+    window.scrollTo({top: 0, behavior: 'smooth'})
+
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
 
     const config = {
@@ -106,9 +108,10 @@ export default function Today() {
 const TodaySection = styled.section`
   height: 100vh;
   width: 100%;
+  overflow-y: auto;
 
   margin-top: 70px;
-  margin-bottom: 28px;
+  margin-bottom: 90px;
   padding: 22px 18px 0;
 
   font-family: 'Lexend Deca', sans-serif;
