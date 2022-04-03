@@ -139,6 +139,10 @@ const HistorySection = styled.section`
       text-decoration: none;
     }
 
+    .react-calendar__month-view__days {
+      height: 85%;
+    }
+
     .react-calendar__navigation__label {
       display: flex;
       align-items: center;
@@ -155,6 +159,7 @@ const HistorySection = styled.section`
       font-size: 14px;
 
       border-radius: 50%;
+      height: 11%;
     }
 
     .--done {
@@ -165,6 +170,15 @@ const HistorySection = styled.section`
       background-color: var(--fail-red);
     }
   }
+
+  .react-calendar__viewContainer,
+  .react-calendar__month-view ,
+  .react-calendar__month-view>div ,
+  .react-calendar__month-view>div>div {
+    height: 100%;
+  }
+
+
 
   h2 {
     color: var(--header-blue);
