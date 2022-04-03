@@ -20,7 +20,7 @@ export default function LogIn() {
     const localToken = localStorage.getItem("token")
     const localImage = localStorage.getItem("image")
 
-    if(localToken.length > 0) {
+    if(localToken !== null && localToken.length > 0) {
       setToken(localToken)
       setUserImage(localImage)
       navigate("/hoje")
@@ -44,7 +44,6 @@ export default function LogIn() {
       localStorage.setItem("token", token)
       localStorage.setItem("image", image)
 
-      console.log("Logged In!")
       navigate("/hoje")
     })
     request.catch((err) => {

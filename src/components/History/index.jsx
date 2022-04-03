@@ -1,4 +1,5 @@
-﻿import styled from "styled-components"
+﻿import {Calendar} from "react-calendar"
+import styled from "styled-components"
 
 import Header from "../Header"
 import Button from "../Button"
@@ -14,7 +15,7 @@ export default function History() {
           <Button value="+" />
         </span>
       </SectionHeader>
-      <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+      <Calendar />
       <Footer />
     </HistorySection>
   )
@@ -35,6 +36,13 @@ const HistorySection = styled.section`
   font-size: 18px;
 
   background-color: var(--bg-color);
+
+  .Calendar {
+    background-color: #fff;
+
+    height: 402px;
+    width: 100%;
+  }
 
   h2 {
     color: var(--header-blue);

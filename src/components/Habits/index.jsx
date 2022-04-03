@@ -45,7 +45,6 @@ export default function Habits() {
 
     const request = axios.get(URL, config)
     request.then((response) => {
-      console.log(response.data)
       setCreatedHabits(response.data)
     })
     request.catch((err) => {

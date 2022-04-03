@@ -13,11 +13,7 @@ export default function Habit({name, days, id, reload}) {
   const {weekdays, token} = useContext(UserContext)
 
   function deleteApiHabit() {
-    console.log("id: ", id)
-
     const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
-
-    console.log("URL: ", URL)
 
     const config = {
       headers: {
@@ -30,7 +26,6 @@ export default function Habit({name, days, id, reload}) {
     if(confirmDelete) {
       const request = axios.delete(URL, config)
       request.then((response) => {
-        console.log("Habit deleted!: ", response)
         reload()
       })
       request.catch((err) => console.error(err.response))

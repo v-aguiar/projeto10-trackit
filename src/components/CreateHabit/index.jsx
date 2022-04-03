@@ -19,8 +19,6 @@ export default function CreateHabit({removeHabit}) {
 
   const {token, weekdays} = useContext(UserContext)
 
-  console.log("habitsDays: ", habitsDays)
-
   function handleChange(e) {
     e.preventDefault()
 
@@ -55,13 +53,12 @@ export default function CreateHabit({removeHabit}) {
 
     const request = axios.post(URL, body, config)
     request.then((response) => {
-      console.log("success: ", response)
       removeHabit()
       setIsLoading(false)
     })
     request.catch((err) => {
       console.error(err.response)
-      alert("Deu ruim! Por favor, tente novamente...")
+      alert("Ops, deu ruim! Por favor, tente novamente...")
       setIsLoading(false)
     })
   }

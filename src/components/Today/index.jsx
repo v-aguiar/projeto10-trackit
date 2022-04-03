@@ -68,7 +68,6 @@ export default function Today() {
     let sum = 0;
     if(currentHabits.length > 0) {
       currentHabits.forEach(({done}) => {
-        console.log(done)
         if(done) sum += (100 / currentHabits.length)
       })
     }

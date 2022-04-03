@@ -19,23 +19,15 @@ export default function SignUp() {
 
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up"
 
-    console.log("data: ", data)
-
     const request = axios.post(URL, data)
     request.then(() => {
-      console.log("Signed Up!")
       navigate("/")
     })
     request.catch((err) => {
       console.error(err.response)
-      alert("Deu ruim, tente novamente!")
+      alert("Ops, deu ruim! Por favor, tente novamente!")
       setLoading(false)
     })
-
-    // email: "vitu@teste.com"
-    // image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5zjHGydxteBYChYUS7ZyQSveSrqHHhyA4yw&usqp=CAU"
-    // name: "Vitu"
-    // password: "vitu"
   }
 
   const handleChange = (key, sanitizeFn) => (e) => {

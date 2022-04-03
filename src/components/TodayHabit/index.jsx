@@ -25,7 +25,6 @@ export default function TodayHabit({currentSequence, done, highestSequence, id, 
 
     const request = axios.post(URL, {}, config)
     request.then((response) => {
-      console.log("checked! ", response)
       reloadHabits()
     })
     request.catch((err) => console.error(err.response))
@@ -42,7 +41,6 @@ export default function TodayHabit({currentSequence, done, highestSequence, id, 
 
     const request = axios.post(URL, {}, config)
     request.then((response) => {
-      console.log("unchecked! ", response)
       reloadHabits()
     })
     request.catch((err) => console.error(err.response))
