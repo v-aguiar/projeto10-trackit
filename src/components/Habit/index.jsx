@@ -92,6 +92,10 @@ const CreatedHabit = styled.article`
 
       transition: all .5s;
 
+      &:first-child {
+        margin-left: 0;
+      }
+
       &.--checked {
         background-color: var(--border-grey);
         color: #fff;

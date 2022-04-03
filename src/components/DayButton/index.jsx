@@ -15,34 +15,34 @@ export default function DayButton({dayKey, value, handleDaysChange, habitsDays, 
 const DayCheck = styled.li`
   div {
     outline: none;
-      border: solid 2px var(--border-grey);
-      border-radius: 5px;
+    border: solid 2px var(--border-grey);
+    border-radius: 5px;
 
-      color: var(--border-grey);
-      font-size: 20px;
-      font-weight: 400;
-      font-family: 'Lexend Deca', sans-serif;
+    color: var(--border-grey);
+    font-size: 20px;
+    font-weight: 400;
+    font-family: 'Lexend Deca', sans-serif;
 
-      height: 35px;
-      width: 35px;
+    height: 35px;
+    width: 35px;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-      margin: 10px 0 10px 5px;
+    margin: 10px 0 10px 5px;
 
-      background-color: #fff;
+    background-color: #fff;
 
-      transition: all .5s;
+    transition: all .5s;
 
-      &:hover {
-        cursor: ${props => props.isLoading ? "default" : "pointer"};
-      }
+    &:hover {
+      cursor: ${props => props.isLoading ? "default" : "pointer"};
+    }
 
-      &.--checked {
-        background-color: var(--border-grey);
-        color: #fff;
-      }
+    &.--checked {
+      background-color: var(--border-grey);
+      color: #fff;
+    }
   }
 `

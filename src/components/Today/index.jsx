@@ -15,9 +15,21 @@ export default function Today() {
   const [reload, setReload] = useState(true)
   const [doneRateValue, setDoneRateValue] = useState(0)
 
+  const {token, setProgress, setUserImage, setToken} = useContext(UserContext)
+
+  useEffect(() => checkLocalToken(), [])
   useEffect(() => fetchTodayHabits(), [reload])
 
-  const {token, setProgress} = useContext(UserContext)
+  function checkLocalToken() {
+    const localToken = localStorage.getItem("token")
+    const localImage = localStorage.getItem("image")
+
+    if(localToken.length > 0) {
+      setToken(localToken)
+      setUserImage(localImage)
+      setReload(!reload)
+    }
+  }
 
   // Change dayjs weekday locale names language, so they are displayed in pt-br
   let updateLocale = require('dayjs/plugin/updateLocale')
@@ -42,7 +54,6 @@ export default function Today() {
 
     const request = axios.get(URL, config)
     request.then((response) => {
-      console.log("ói eu aqui")
       setTodayHabits(response.data)
       updateDoneRate(response.data)
     })

@@ -15,6 +15,7 @@ export default function CreateHabit({removeHabit}) {
   const [habitsName, setHabitsName] = useState({name: ""})
   const [habitsDays, setHabitsDays] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [errors, setErrors] = useState("")
 
   const {token, weekdays} = useContext(UserContext)
 
@@ -31,6 +32,10 @@ export default function CreateHabit({removeHabit}) {
   function handleDaysChange(value) {
     if(!habitsDays.includes(value)) {
       setHabitsDays([...habitsDays, value])
+      setErrors("")
+    } else {
+      const filteredArray = habitsDays.filter((habitDay) => habitDay !== value)
+      setHabitsDays(filteredArray)
     }
   }
 
@@ -63,8 +68,13 @@ export default function CreateHabit({removeHabit}) {
 
   function handleSubmit(e) {
     e.preventDefault()
-    setIsLoading(true)
-    postHabit()
+
+    if(habitsDays.length > 0) {
+      setIsLoading(true)
+      postHabit()
+    } else {
+      setErrors("Selecione pelo menos um dia...")
+    }
   }
 
   return (
@@ -72,7 +82,7 @@ export default function CreateHabit({removeHabit}) {
       <form onSubmit={handleSubmit} >
         <label className="sr-only" htmlFor="habit">Habit description</label>
         <Input onChange={handleChange} value={habitsName} type="text" placeholder="Nome do hábito" name="habit" disabled={isLoading ? true : false} />
-
+        {errors ? <small className="err">{errors}</small> : <></>}
         <ul className="day-inputs">
           {weekdays.map(({dayKey, value}) => {
             const id = uuidv4();
@@ -81,7 +91,7 @@ export default function CreateHabit({removeHabit}) {
         </ul>
 
         <div className="habit-buttons">
-          <a onClick={removeHabit}>Cancelar</a>
+          <button onClick={removeHabit}>Cancelar</button>
           <Button value={isLoading ? "" : "Salvar"} />
         </div>
       </form>
@@ -89,7 +99,7 @@ export default function CreateHabit({removeHabit}) {
   )
 }
 
-// ***************** Component Styles
+// ********************* Component Styles *********************
 
 const AddHabit = styled.section`
   background-color: #fff;
@@ -105,9 +115,18 @@ const AddHabit = styled.section`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    .err {
+      color: var(--fail-red);
+      font-size: 10px;
+    }
   
     .day-inputs {
       display: flex;
+
+      li:first-child div {
+        margin-left: 0;
+      }
     }
   
     .habit-buttons {
@@ -118,9 +137,17 @@ const AddHabit = styled.section`
   
       width: 180px;
 
-      a {
-        margin-right: 23px;
+      input {
+        font-size: 18px;
+        margin-left: 5px;
+      }
+
+      button{
+        border: none;
+
+        background-color: transparent;
         color: var(--btn-blue);
+        font-size: 18px;
 
         &:hover {
           cursor: pointer;

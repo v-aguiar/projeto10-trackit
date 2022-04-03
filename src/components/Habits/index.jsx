@@ -15,12 +15,24 @@ import CreateHabit from "../CreateHabit"
 
 export default function Habits() {
   const [habitsAmount, setHabitsAmount] = useState(new Map())
-  const [counter, setCounter] = useState(0)
   const [createdHabits, setCreatedHabits] = useState([])
+  const [counter, setCounter] = useState(0)
 
-  const {token} = useContext(UserContext)
+  const {token, setToken, setUserImage} = useContext(UserContext)
 
+  useEffect(() => {checkLocalToken()}, [])
   useEffect(() => fetchHabits(), [counter])
+
+  function checkLocalToken() {
+    const localToken = localStorage.getItem("token")
+    const localImage = localStorage.getItem("image")
+
+    if(localToken.length > 0) {
+      setToken(localToken)
+      setUserImage(localImage)
+      reload()
+    }
+  }
 
   function fetchHabits() {
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"

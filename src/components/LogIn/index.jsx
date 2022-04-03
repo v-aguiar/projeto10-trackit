@@ -1,4 +1,4 @@
-﻿import {useState, useContext} from 'react';
+﻿import {useState, useContext, useEffect} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 
 import UserContext from '../../contexts/UserContext';
@@ -16,7 +16,18 @@ export default function LogIn() {
 
   const navigate = useNavigate()
 
-  function validateLogin(e) {
+  useEffect(() => {
+    const localToken = localStorage.getItem("token")
+    const localImage = localStorage.getItem("image")
+
+    if(localToken.length > 0) {
+      setToken(localToken)
+      setUserImage(localImage)
+      navigate("/hoje")
+    }
+  }, [])
+
+  function handleLogin(e) {
     e.preventDefault()
 
     setLoading(true)
@@ -30,7 +41,8 @@ export default function LogIn() {
       setToken(token)
       setUserImage(image)
 
-      console.log("response: ", response.data)
+      localStorage.setItem("token", token)
+      localStorage.setItem("image", image)
 
       console.log("Logged In!")
       navigate("/hoje")
@@ -40,9 +52,6 @@ export default function LogIn() {
       alert("Deu ruim, tente novamente!")
       setLoading(false)
     })
-
-
-    // TOKEN --> "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEyMiwiaWF0IjoxNjQ4NzMxMzg2fQ.IK3DuXfr4tej5yY2k5H_aC2smSlGMWTR3YAOyx5MGvE"
   }
 
   const handleChange = (key, sanitizeFn) => (e) => {
@@ -53,7 +62,7 @@ export default function LogIn() {
 
   return (
     <section className="LogIn">
-      <form onSubmit={validateLogin} >
+      <form onSubmit={handleLogin} >
         <label className="sr-only" htmlFor="email">Email</label>
         <Input onChange={handleChange("email")} value={data.email} type="email" placeholder="Email" name="email" disabled={loading ? true : false} />
         <label className="sr-only" htmlFor="password">Senha</label>
