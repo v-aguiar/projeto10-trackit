@@ -11,7 +11,7 @@ import Button from "../Button";
 import Input from "../Input";
 import DayButton from "../DayButton";
 
-export default function CreateHabit({removeHabit}) {
+export default function CreateHabit({setOpenCreateHabit, removeHabit, hideCreateHabit}) {
   const [habitsName, setHabitsName] = useState({name: ""})
   const [habitsDays, setHabitsDays] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -52,8 +52,8 @@ export default function CreateHabit({removeHabit}) {
     }
 
     const request = axios.post(URL, body, config)
-    request.then((response) => {
-      removeHabit()
+    request.then(() => {
+      setOpenCreateHabit(false)
       setIsLoading(false)
     })
     request.catch((err) => {
@@ -75,11 +75,12 @@ export default function CreateHabit({removeHabit}) {
   }
 
   return (
-    <AddHabit>
+    <AddHabit hideCreateHabit={hideCreateHabit} >
       <form onSubmit={handleSubmit} >
         <label className="sr-only" htmlFor="habit">Habit description</label>
         <Input onChange={handleChange} value={habitsName} type="text" placeholder="Nome do hábito" name="habit" disabled={isLoading ? true : false} />
         {errors ? <small className="err">{errors}</small> : <></>}
+
         <ul className="day-inputs">
           {weekdays.map(({dayKey, value}) => {
             const id = uuidv4();
@@ -88,7 +89,7 @@ export default function CreateHabit({removeHabit}) {
         </ul>
 
         <div className="habit-buttons">
-          <button onClick={removeHabit}>Cancelar</button>
+          <button onClick={(e) => removeHabit(e)}>Cancelar</button>
           <Button value={isLoading ? "" : "Salvar"} />
         </div>
       </form>
@@ -100,8 +101,11 @@ export default function CreateHabit({removeHabit}) {
 
 const AddHabit = styled.section`
   background-color: #fff;
-  width: 100%;
-  height: 180px;
+  width: ${props => props.hideCreateHabit ? "1px !important" : "100%"};
+  height: ${props => props.hideCreateHabit ? "1px !important" : "180px"};
+  visibility: ${props => props.hideCreateHabit ? "hidden" : "visible"};
+  opacity: ${props => props.hideCreateHabit ? "0" : "1"};
+  position: ${props => props.hideCreateHabit ? "absolute !important" : "initial"};
 
   padding: 19px 18px;
   margin-bottom: 30px;

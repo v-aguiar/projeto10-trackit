@@ -14,16 +14,17 @@ import Habit from "../Habit"
 import CreateHabit from "../CreateHabit"
 
 export default function Habits() {
-  const [habitsAmount, setHabitsAmount] = useState(new Map())
   const [createdHabits, setCreatedHabits] = useState([])
-  const [counter, setCounter] = useState(0)
+  const [reload, setReload] = useState(true)
+  const [openCreateHabit, setOpenCreateHabit] = useState(false)
+  const [hideCreateHabit, setHideCreateHabit] = useState(false)
 
   const {token, setToken, setUserImage} = useContext(UserContext)
 
   // eslint-disable-next-line
   useEffect(() => {checkLocalToken()}, [])
   // eslint-disable-next-line
-  useEffect(() => fetchHabits(), [counter])
+  useEffect(() => fetchHabits(), [reload])
 
   function checkLocalToken() {
     const localToken = localStorage.getItem("token")
@@ -32,7 +33,7 @@ export default function Habits() {
     if(localToken.length > 0) {
       setToken(localToken)
       setUserImage(localImage)
-      reload()
+      reloadComponent()
     }
   }
 
@@ -56,48 +57,47 @@ export default function Habits() {
     })
   }
 
-  function addCount() {
-    setCounter(counter + 1)
-
-    addHabit(`habit${counter}`, counter)
+  function openCreate() {
+    (hideCreateHabit) ? setHideCreateHabit(false) : setOpenCreateHabit(true)
   }
 
-  function addHabit(k, v) {
-    setHabitsAmount(new Map(habitsAmount.set(k, v)))
+  function removeHabit(e) {
+    e.preventDefault()
+
+    setHideCreateHabit(true)
   }
 
-  function removeHabit() {
-    habitsAmount.delete(`habit${counter - 1}`, counter - 1)
-    setCounter(counter - 1)
-  }
-
-  function reload() {
-    setCounter(counter + 1)
-    setCounter(counter - 1)
+  function reloadComponent() {
+    setReload(!reload)
   }
 
   return (
     <>
       <Header />
       <HabitsSection>
-        <SectionHeader>
+        <SectionHeader hideCreateHabit={hideCreateHabit}>
           <h2>Meus hábitos</h2>
-          <span onClick={addCount} className="plusBtn">
+          <span onClick={openCreate} className="plusBtn">
             <Button value="+" />
           </span>
-        </SectionHeader>
+        </SectionHeader >
         {
-          [...habitsAmount.values()].map(value => {
-            const uniqueKey = uuidv4()
-            return <CreateHabit key={uniqueKey} removeHabit={removeHabit} />
-          })
+          (openCreateHabit) ? <CreateHabit hideCreateHabit={hideCreateHabit} removeHabit={removeHabit} setOpenCreateHabit={setOpenCreateHabit} /> : <></>
+
+
+
+
+          // [...habitsAmount.values()].map(value => {
+          //   const uniqueKey = uuidv4()
+          //   return <CreateHabit key={uniqueKey} removeHabit={removeHabit} />
+          // })
         }
 
         {
           (createdHabits.length > 0)
             ? createdHabits.map(({name, days, id}) => {
               const uniqueKey = uuidv4()
-              return <Habit reload={reload} name={name} days={days} id={id} key={uniqueKey} />
+              return <Habit reload={reloadComponent} name={name} days={days} id={id} key={uniqueKey} />
             })
             : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
         }

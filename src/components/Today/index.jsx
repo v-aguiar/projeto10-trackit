@@ -15,12 +15,12 @@ export default function Today() {
   const [reload, setReload] = useState(true)
   const [doneRateValue, setDoneRateValue] = useState(0)
 
-  const {token, setProgress, setUserImage, setToken} = useContext(UserContext)
+  const {token, progress, setProgress, setUserImage, setToken} = useContext(UserContext)
 
   // eslint-disable-next-line
   useEffect(() => checkLocalToken(), [])
   // eslint-disable-next-line
-  useEffect(() => fetchTodayHabits(), [reload])
+  useEffect(() => fetchTodayHabits(), [reload, progress])
 
   function checkLocalToken() {
     const localToken = localStorage.getItem("token")
@@ -34,7 +34,7 @@ export default function Today() {
   }
 
   // Change dayjs weekday locale names language, so they are displayed in pt-br
-  let updateLocale = require('dayjs/plugin/updateLocale')
+  const updateLocale = require('dayjs/plugin/updateLocale')
   dayjs.extend(updateLocale)
 
   dayjs.updateLocale('en', {
@@ -89,7 +89,7 @@ export default function Today() {
             {
               doneRateValue === 0
                 ? <small>Nenhum hábito concluído ainda</small>
-                : <small>{doneRateValue.toFixed(2)}% dos hábitos concluídos</small>
+                : <small>{Math.floor(doneRateValue)}% dos hábitos concluídos</small>
             }
 
           </span>
