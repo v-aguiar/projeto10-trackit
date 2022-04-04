@@ -17,7 +17,9 @@ export default function Today() {
 
   const {token, setProgress, setUserImage, setToken} = useContext(UserContext)
 
+  // eslint-disable-next-line
   useEffect(() => checkLocalToken(), [])
+  // eslint-disable-next-line
   useEffect(() => fetchTodayHabits(), [reload])
 
   function checkLocalToken() {
@@ -78,41 +80,41 @@ export default function Today() {
   }
 
   return (
-    <TodaySection>
+    <>
       <Header />
-      <SectionHeader>
-        <span className="today-header">
-          <h2>{formatedDate}</h2>
-          {
-            doneRateValue === 0
-              ? <small>Nenhum hábito concluído ainda</small>
-              : <small>{doneRateValue}% dos hábitos concluídos</small>
-          }
+      <TodaySection>
+        <SectionHeader>
+          <span className="today-header">
+            <h2>{formatedDate}</h2>
+            {
+              doneRateValue === 0
+                ? <small>Nenhum hábito concluído ainda</small>
+                : <small>{doneRateValue.toFixed(2)}% dos hábitos concluídos</small>
+            }
 
-        </span>
-      </SectionHeader>
-      {
-        (todayHabits.length > 0)
-          ? todayHabits.map(({currentSequence, done, highestSequence, id, name}) => {
-            return <TodayHabit reloadHabits={reloadHabits} done={done} id={id} key={id} currentSequence={currentSequence} highestSequence={highestSequence} name={name} />
-          })
-          : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
-      }
+          </span>
+        </SectionHeader>
+        {
+          (todayHabits.length > 0)
+            ? todayHabits.map(({currentSequence, done, highestSequence, id, name}) => {
+              return <TodayHabit reloadHabits={reloadHabits} done={done} id={id} key={id} currentSequence={currentSequence} highestSequence={highestSequence} name={name} />
+            })
+            : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+        }
+      </TodaySection>
       <Footer />
-    </TodaySection>
+    </>
   )
 }
 
 // ********************* Component Styles 
 
 const TodaySection = styled.section`
-  height: 100vh;
   width: 100%;
-  overflow-y: auto;
+  height: 100%;
 
   margin-top: 70px;
-  margin-bottom: 90px;
-  padding: 22px 18px 0;
+  padding: 22px 18px 90px;
 
   font-family: 'Lexend Deca', sans-serif;
   font-weight: 400;

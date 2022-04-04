@@ -20,7 +20,9 @@ export default function Habits() {
 
   const {token, setToken, setUserImage} = useContext(UserContext)
 
+  // eslint-disable-next-line
   useEffect(() => {checkLocalToken()}, [])
+  // eslint-disable-next-line
   useEffect(() => fetchHabits(), [counter])
 
   function checkLocalToken() {
@@ -75,44 +77,44 @@ export default function Habits() {
   }
 
   return (
-    <HabitsSection>
+    <>
       <Header />
-      <SectionHeader>
-        <h2>Meus hábitos</h2>
-        <span onClick={addCount} className="plusBtn">
-          <Button value="+" />
-        </span>
-      </SectionHeader>
-      {
-        [...habitsAmount.values()].map(value => {
-          const uniqueKey = uuidv4()
-          return <CreateHabit key={uniqueKey} removeHabit={removeHabit} />
-        })
-      }
-
-      {
-        (createdHabits.length > 0)
-          ? createdHabits.map(({name, days, id}) => {
+      <HabitsSection>
+        <SectionHeader>
+          <h2>Meus hábitos</h2>
+          <span onClick={addCount} className="plusBtn">
+            <Button value="+" />
+          </span>
+        </SectionHeader>
+        {
+          [...habitsAmount.values()].map(value => {
             const uniqueKey = uuidv4()
-            return <Habit reload={reload} name={name} days={days} id={id} key={uniqueKey} />
+            return <CreateHabit key={uniqueKey} removeHabit={removeHabit} />
           })
-          : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
-      }
+        }
+
+        {
+          (createdHabits.length > 0)
+            ? createdHabits.map(({name, days, id}) => {
+              const uniqueKey = uuidv4()
+              return <Habit reload={reload} name={name} days={days} id={id} key={uniqueKey} />
+            })
+            : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+        }
+      </HabitsSection>
       <Footer />
-    </HabitsSection>
+    </>
   )
 }
 
 // ********************* Component Styles *********************
 
 const HabitsSection = styled.section`
-  height: 100vh;
   width: 100%;
-  overflow-y: auto;
+  height: 100%;
 
   margin-top: 70px;
-  margin-bottom: 90px;
-  padding: 22px 18px 0;
+  padding: 22px 18px 90px;
 
   font-family: 'Lexend Deca', sans-serif;
   font-weight: 400;

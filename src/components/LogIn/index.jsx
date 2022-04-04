@@ -27,6 +27,7 @@ export default function LogIn() {
       setUserImage(localImage)
       navigate("/hoje")
     }
+    // eslint-disable-next-line
   }, [])
 
   function handleLogin(e) {

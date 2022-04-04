@@ -60,7 +60,7 @@ const CreatedHabit = styled.article`
   margin-bottom: 10px;
 
   position: relative;
-  
+
   .day-inputs {
     display: flex;
 

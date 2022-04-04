@@ -38,7 +38,7 @@ export default function Header() {
   )
 }
 
-const HeaderSection = styled.section`
+const HeaderSection = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -95,6 +95,8 @@ const HeaderSection = styled.section`
     border-radius: 50%;
     background-image: url(${props => props.userImage});
     background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 0;
 
     width: 51px;
     height: 51px;
